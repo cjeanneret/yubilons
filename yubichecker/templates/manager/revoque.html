@@ -1,0 +1,19 @@
+## -*- coding: utf-8 -*-
+<%include file="../header.html" />
+<%!
+from yubichecker.lib import xtea
+from pylons import config
+xtea_key = config['xtea_key']
+def my_decrypt(text):
+  return xtea.crypt(xtea_key, text.decode('hex'))
+line=1
+%>
+<h3>Manager <span class="normal">&gt;&gt; <a href="/manager/">Key list</a></span></h3>
+
+<h4>Revoque key</h4>
+<p>
+  If you lost this key, or if you don't want to use it with our system anymore, simply clic on the link bellow.<br />
+  You can add it again anytime later.
+</p>
+<a href="/manager/dorevoque/${c.key.id}">I want to revoque <strong>${c.key.public_id}</strong></a>
+<%include file="../footer.html" />

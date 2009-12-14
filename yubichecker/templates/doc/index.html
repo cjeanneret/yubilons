@@ -1,0 +1,92 @@
+## -*- coding: utf-8 -*-
+<%include file="../header.html" />
+<h3>Documentation</h3>
+
+<h4>Personalize your Yubikey</h4>
+<p>Yubico provides some tools allowing you to reconfigure your Yubikey. Please refer to their documentation: <a href="http://yubico.com/developers/personalization/">Personalization Tool</a>.</p>
+
+<p>For Linux users, here's a simple script which can help you. You'll have to install some tools before.</p>
+<ul>
+  <li><a href="http://code.google.com/p/yubico-c/">C Yubico Library</a></li>
+  <li><a href="http://code.google.com/p/yubikey-personalization/">Yubikey Personalization Library</a></li>
+</ul>
+<pre>
+#!/usr/bin/env python
+from random import seed, choice
+from datetime import datetime
+from string import letters
+
+__aes_size = 32
+__priv_size = 12
+__pub_size = 6
+__hexHexChars = '0123456789abcdef'
+__modHexChars = 'cbdefghijklnrtuv'
+
+__hex2ModDict = dict(zip(__hexHexChars, __modHexChars))
+__mod2HexDict = dict(zip(__modHexChars, __hexHexChars))
+
+def __modhex_encode(s):
+    return ''.join(
+        [ __hex2ModDict[c] for c in s.encode('hex') ]
+    )
+# end def modhex_encode
+
+def __modhex_decode(m):
+    return ''.join(
+        [ __mod2HexDict[c] for c in m ]
+    ).decode('hex')
+# end def modhex_decode
+
+def __rand(size,array):
+  seed(datetime.now())
+  return ''.join([choice(array) for x in xrange(size)])
+
+__aes  =  __rand(__aes_size, __hexHexChars)
+__priv = __rand(__priv_size, __hexHexChars)
+__pub  = __modhex_encode(__rand(__pub_size, letters))
+
+print '''ykpersonalize -a%s -ouid=%s -ofixed=%s''' % (__aes, __priv, __pub)
+
+</pre>
+
+
+<h4>Server answers</h4>
+We have several answer code. Most of them are Status 200, and a text output which is really easy to parse.<br />
+<ul>
+  <li>Server answers 404: That means we don't have find any AES key attached to your public ID</li>
+  <li>Server answers 203: That means either 
+    <ul>
+      <li>your signature is bad</li>
+      <li>or your private id isn't correct</li>
+      <li>or your AES key are bad.</li>
+    </ul>
+    In the two last cases, please contact us
+  </li>
+  <li>Server answers 200: You can parse the output, and know what exactly happens</li>
+</ul>
+
+<h4>Sign your request</h4>
+To sign your request, you'll have to do as follow:
+<pre>
+#!/usr/bin/env python
+import hmac, base64
+from hashlib import sha512
+
+key = AES
+s = 'otp=OTP'
+
+args = hmac.new(key, s, digestmod=sha512)
+sign = base64.b64encode(args.digest())
+print sign
+</pre>
+
+<h4>To verify our signature</h4>
+You just have to encrypt the content of our answer in the same way, and to compare signatures. Example:<br />
+Our answer:
+<pre>
+status=OK
+t=TIMESTAMP
+h=SIGN
+</pre>
+You'll take the first two lines, with the linebreak, encode it, and compare with SIGN.
+<%include file="../footer.html" />

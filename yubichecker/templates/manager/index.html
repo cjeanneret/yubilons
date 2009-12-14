@@ -1,0 +1,47 @@
+## -*- coding: utf-8 -*-
+<%include file="../header.html" />
+<%!
+from yubichecker.lib import xtea
+from pylons import config
+xtea_key = config['xtea_key']
+def my_decrypt(text):
+  return xtea.crypt(xtea_key, text.decode('hex'))
+%>
+<% line = 0 %>
+<h3>Manager</h3>
+
+<h4>Configured keys</h4>
+<table cellspacing="0" cellpadding="0">
+  <tr class="header">
+    <td>Public ID</td>
+    <td>Private ID</td>
+    <td>API Key</td>
+    <td>AES Key</td>
+    <td>Actions</td>
+  </tr>
+  % for key in c.keys:
+  <%
+  if line % 2 == 0:
+    color='#ccc'
+  else:
+    color = '#fff'
+  %>
+  <tr>
+    <td style="background-color:${color}">${key.public_id}</td>
+    <td style="background-color:${color}">${key.private_id}</td>
+    <td style="background-color:${color}">${key.api.key}</td>
+    <td style="background-color:${color}">${key.yubi_aes.aes | my_decrypt}</td>
+    <td style="background-color:${color}" class="images">
+      <a href="/manager/manage/${key.id}"><img src="/icons/edit.png" alt="Edit key" title="Edit key" /></a>
+      <a href="/manager/revoque/${key.id}"><img src="/icons/revoque.png" alt="Revoque key" title="Revoque key" /></a>
+    </td>
+  </tr>
+  <% line += 1 %>
+  % endfor
+</table>
+
+<p>
+  <a href="/addkey">Add a new key</a>
+</p>
+
+<%include file="../footer.html" />

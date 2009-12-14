@@ -1,0 +1,40 @@
+## -*- coding: utf-8 -*-
+<%include file="../header.html" />
+<h3>Add your key on this server</h3>
+<ol>
+  <li>Generate 3 OTP in the area bellow</li>
+  <li>Put your AES key in the second field</li>
+  <li>Put your email address in the last field</li>
+</ol>
+<p>
+Please refer to <a href="/doc/">our documentation</a>.
+</p>
+
+<span style="color:#ff3300">${c.err}</span>
+<form action="/addkey/do" method="post">
+  <table>
+    <tr>
+      <td>OTPs: </td>
+      <td><textarea name="otps" style="width:550px;height:100px;"></textarea></td>
+    </tr>
+    <tr>
+      <td>AES key: </td>
+      <td><input type="text" name="aes" style="width:550px;" /></td>
+    </tr>
+    % if c.user:
+    <tr>
+      <td>Email: </td>
+      <td><input type="text" name="mail" readonly value="${c.user}" style="width:550px;" /></td>
+    </tr>
+    % else:
+    <tr>
+      <td>Email: </td>
+      <td><input type="text" name="mail" style="width:550px;" /></td>
+    </tr>
+    % endif
+    <tr>
+      <td colspan="2" style="text-align:center"><input type="submit" value="Add" /></td>
+    </tr>
+  </table>
+</form>
+<%include file="../footer.html" />

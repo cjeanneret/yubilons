@@ -1,0 +1,29 @@
+## -*- coding: utf-8 -*-
+<%include file="../header.html" />
+        <ol style="list-style-position: outside;">
+        <li>Place your YubiKey in the USB-port.</li>
+        <li>Put your finger on the YubiKey button and hold it
+          steady until the YubiKey field is filled.</li>
+        </ol>
+        <form action="/verify/check" method="post" style="border: 1px solid #e5e5e5; background-color: #f1f1f1; padding: 10px; margin: 0px; font-size:12px;">
+        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+          <tr>
+            <td><strong>YubiKey</strong></td><td><input type="text" name="otp" class="yubiKeyInput fh disable_form_history" /></td>
+          </tr>
+        </table>
+        </form>
+        <p>
+        This form is used only for testing purpose. <a href="/addkey">As long as we don't have your AES key</a>, you cannot use it.<br />
+          You can also access to the result as follow:<br />
+          <ul>
+            <li>TXT output: <a href="https://yubico.internux.ch/verify/check/?otp=OTP&amp;h=HASH">https://yubico.internux.ch/verify/check/?otp=OTP&amp;h=HASH</a></li>
+          </ul>
+          We can find your API key with your OTP, and thus check h, which stands for your request signature.<br />
+          Signature is made as follow:
+<pre>
+args = hmac.new(key, s, digestmod=sha512)
+sign = base64.b64encode(args.digest())
+</pre>
+          where key stands for your API key (ASCII) and s your query (in our case, 'otp=OTP').
+        </p>
+<%include file="../footer.html" />

@@ -1,0 +1,27 @@
+## -*- coding: utf-8 -*-
+<%include file="../header.html" />
+<%!
+from yubichecker.lib import xtea
+from pylons import config
+xtea_key = config['xtea_key']
+def my_decrypt(text):
+  return xtea.crypt(xtea_key, text.decode('hex'))
+line=1
+%>
+<h3>Manager <span class="normal">&gt;&gt; <a href="/manager/">Key list</a></span></h3>
+
+<h4>Change AES Key</h4>
+<p>
+  Here you can change the AES key for your Yubikey <strong>${c.key.public_id}</strong>. Be sure to put the good AES key, as a wrong one will prevent your key to work successfully!
+</p>
+<form action="/manager/update/${c.key.id}" method="post">
+  <fieldset>
+    <legend>AES for <strong>${c.key.public_id}</strong></legend>
+    <br />
+    <strong>Change AES Key</strong>: <input type="text" name="aes" value="${c.key.yubi_aes.aes | my_decrypt}" />
+    <p class="center">
+      <input class="submit" type="submit" value="Change AES Key" />
+    </p>
+  </fieldset>
+</form>
+<%include file="../footer.html" />

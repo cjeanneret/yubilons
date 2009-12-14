@@ -1,0 +1,19 @@
+## -*- coding: utf-8 -*-
+<%include file="../header.html" />
+<h3>Manager - Login</h3>
+<form action="/manager/logup" method="post">
+  <table>
+    <tr>
+      <td>Mail address: </td>
+      <td><input type="text" name="mail" /></td>
+    </tr>
+    <tr>
+      <td>Yubikey: </td>
+      <td><input type="text" name="otp" class="yubiKeyInput fh disable_form_history" /></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="center"><input type="submit" class="submit" value="Login" style="display:none" /></td>
+    </tr>
+  </table>
+</form>
+<%include file="../footer.html" />
