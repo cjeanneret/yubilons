@@ -11,7 +11,10 @@ And to stop it:
 paster serve --stop-daemon --pid-file /var/run/paster/yubico.pid
 
 
+
 Licence:
+
+Main application
 2-clause BSD licence :
 Copyright 2009 CJeanneret. All rights reserved.
 
@@ -38,3 +41,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 The views and conclusions contained in the software and documentation are those of the
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of CJeanneret.
+
+yubikey library:
+Please refer to http://code.google.com/p/yubikey-python/
+
+Yubico logo and design:
+Please refer to http://www.yubico.com/home/index/
