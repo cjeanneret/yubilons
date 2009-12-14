@@ -1,19 +1,11 @@
-This file is for you to describe the yubichecker application. Typically
-you would include information such as the information below:
+To install this app:
+  checkout it in a directory
+  configure your app editing config.ini
+  do "paster setup-app config.ini"
+  paster --serve --reload config.ini
 
-Installation and Setup
-======================
+To demonize this app, you can use this kind of line
+paster serve --daemon --pid-file /var/run/paster/yubico.pid --log-file /var/log/paster/yubico.log --user=nginx --group=nginx prod.ini
 
-Install ``yubichecker`` using easy_install::
-
-    easy_install yubichecker
-
-Make a config file as follows::
-
-    paster make-config yubichecker config.ini
-
-Tweak the config file as appropriate and then setup the application::
-
-    paster setup-app config.ini
-
-Then you are ready to go.
+And to stop it:
+paster serve --stop-daemon --pid-file /var/run/paster/yubico.pid
